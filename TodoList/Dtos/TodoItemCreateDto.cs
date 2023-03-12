@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TodoList.Dtos
 {
     public class TodoItemCreateDto
-    {     
+    {
         [Required]
         [MaxLength(250)]
         public string Description { get; set; }

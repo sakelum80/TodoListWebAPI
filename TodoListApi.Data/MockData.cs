@@ -27,7 +27,7 @@ namespace TodoListApi.Data
             };
 
             return toDoList;
-        }        
+        }
 
     }
 }

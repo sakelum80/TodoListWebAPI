@@ -10,7 +10,6 @@ namespace TodoList.Service
     public class TodoListRepoService : ITodoListRepo
     {
         private readonly TodoListDBContext _context;
-
         public TodoListRepoService(TodoListDBContext context)
         {
             _context = context;
@@ -34,7 +33,6 @@ namespace TodoList.Service
             }
 
             _context.TodoItems.Remove(item);
-            _context.SaveChanges();
         }
 
         public IEnumerable<TodoItem> GetAllItems()
@@ -67,9 +65,8 @@ namespace TodoList.Service
             _context.Update(itemFromDatabase);
             _context.SaveChanges();
         }
-
         public bool UpdateStatus(int id, bool status)
-        {  
+        {
             if (id > 0)
             {
                 var itemFromDatabase = GetItem(id);

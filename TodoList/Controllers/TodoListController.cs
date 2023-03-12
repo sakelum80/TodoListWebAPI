@@ -73,7 +73,7 @@ namespace TodoList.Controllers
             _todoListRepo.UpdateItem(todoItem);
             _todoListRepo.SaveChanges();
 
-            return NoContent();           
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -81,7 +81,7 @@ namespace TodoList.Controllers
         {
             var item = _todoListRepo.GetItem(id);
 
-            if(item == null)
+            if (item == null)
             {
                 return NotFound();
             }
@@ -94,7 +94,7 @@ namespace TodoList.Controllers
         [HttpPut]
         public bool UpdateStatus(int id, bool status)
         {
-            var  itemStatus = _todoListRepo.UpdateStatus(id, status);
+            var itemStatus = _todoListRepo.UpdateStatus(id, status);
             return itemStatus;
         }
     }

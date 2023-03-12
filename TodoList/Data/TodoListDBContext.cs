@@ -11,7 +11,7 @@ namespace TodoList.Data
     {
         public TodoListDBContext(DbContextOptions<TodoListDBContext> options) : base(options)
         {
-                
+
         }
 
         public DbSet<TodoItem> TodoItems { get; set; }

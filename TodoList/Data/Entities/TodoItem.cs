@@ -15,7 +15,7 @@ namespace TodoList.Data.Entities
         [MaxLength(250)]
         public string Description { get; set; }
 
-       [Required]
+        [Required]
         public bool IsCompleted { get; set; }
     }
 }

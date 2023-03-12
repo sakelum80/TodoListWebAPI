@@ -18,5 +18,5 @@ namespace TodoList.Profiles
             CreateMap<TodoItemCreateDto, TodoItem>();
             CreateMap<TodoItemUpdateDto, TodoItem>();
         }
-    }    
+    }
 }

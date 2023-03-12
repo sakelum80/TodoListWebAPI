@@ -25,7 +25,7 @@ namespace TodoList
         }
 
         public IConfiguration Configuration { get; }
-       
+
         public void ConfigureServices(IServiceCollection services)
         {
             // Add Cors
@@ -44,7 +44,7 @@ namespace TodoList
             services.AddScoped<ITodoListRepo, TodoListRepoService>();
 
             ConfigureSwaggerService(services);
-           
+
         }
 
         private static void ConfigureSwaggerService(IServiceCollection services)

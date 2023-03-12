@@ -12,7 +12,7 @@ namespace TodoList.Service.UnitTests
     public class TodoListServiceApiTest
     {
         private readonly TodoListDBContext _context;
-        private TodoListRepoService _toDoListService;
+        private TodoListRepoService _service;
         private MockData _mockData;
         public TodoListServiceApiTest()
         {
@@ -24,7 +24,7 @@ namespace TodoList.Service.UnitTests
 
             _mockData = new MockData();
 
-            _toDoListService = new TodoListRepoService(_context);
+            _service = new TodoListRepoService(_context);
         }
         [TestMethod]
         public void GetAllItemsFromDatabase()
@@ -34,10 +34,10 @@ namespace TodoList.Service.UnitTests
             //Act
             foreach (var item in _mockData.TodoList())
             {
-                _toDoListService.CreateItem(item);
+                _service.CreateItem(item);
             }
 
-            var allItemsFromMemory = _toDoListService.GetAllItems();
+            var allItemsFromMemory = _service.GetAllItems();
 
             //Assert
             Assert.IsNotNull(allItemsFromMemory);
@@ -50,9 +50,9 @@ namespace TodoList.Service.UnitTests
             //Arrange
             GetAllItemsFromDatabase();
             //Act
-            var item = _toDoListService.GetItem(7);
+            var item = _service.GetItem(7);
             //Assert
-            Assert.IsNotNull(item);       
+            Assert.IsNotNull(item);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace TodoList.Service.UnitTests
             int completeItemCount = 7;
             GetAllItemsFromDatabase();
             //Act
-            var itemList = _toDoListService.GetAllItems();
+            var itemList = _service.GetAllItems();
 
             List<TodoItem> completedItemList = new List<TodoItem>();
 
@@ -71,7 +71,7 @@ namespace TodoList.Service.UnitTests
                 if (item.IsCompleted)
                 {
                     completedItemList.Add(item);
-                }                
+                }
             }
 
             //Assert
@@ -86,7 +86,7 @@ namespace TodoList.Service.UnitTests
             int completeItemCount = 3;
             GetAllItemsFromDatabase();
             //Act
-            var itemList = _toDoListService.GetAllItems();
+            var itemList = _service.GetAllItems();
 
             List<TodoItem> pendingItemList = new List<TodoItem>();
 
@@ -101,6 +101,74 @@ namespace TodoList.Service.UnitTests
             //Assert
             Assert.IsNotNull(pendingItemList);
             Assert.IsTrue(pendingItemList.Count().Equals(completeItemCount));
+        }
+
+        [TestMethod]
+        public void UpdateTodoStatus()
+        {
+            //Arrange
+            int itemId = 4;
+            GetAllItemsFromDatabase();
+
+            //Act
+            var itemStatus = _service.UpdateStatus(itemId, false);
+
+            TodoItem todoItem = _service.GetItem(itemId);
+
+            //Assert
+            if (itemStatus == todoItem.IsCompleted)
+            {
+                Assert.IsTrue(true);
+            }
+        }
+
+        [TestMethod]
+        public void DeleteTodoItem()
+        {
+            //Arrange
+            var toBeDeleteItem = new TodoItem()
+            {
+                Id = 13,
+                Description = "Testcase for delete",
+                IsCompleted = false
+            };
+
+            GetAllItemsFromDatabase();
+
+            //Act
+            _service.DeleteItem(toBeDeleteItem);
+
+            TodoItem todoItem = _service.GetItem(toBeDeleteItem.Id);
+
+            //Assert
+            if (todoItem == null)
+            {
+                Assert.IsTrue(true);
+            }
+        }
+
+        [TestMethod]
+        public void UpdateTodoItem()
+        {
+            //Arrange
+            var toBeUpdatedItem = new TodoItem()
+            {
+                Id = 5,
+                Description = "Testcase for update",
+                IsCompleted = true
+            };
+
+            GetAllItemsFromDatabase();
+
+            //Act
+            _service.UpdateItem(toBeUpdatedItem);
+
+            TodoItem todoItem = _service.GetItem(toBeUpdatedItem.Id);
+
+            //Assert
+            Assert.AreEqual(todoItem.Id, toBeUpdatedItem.Id);
+            Assert.AreEqual(todoItem.Description, toBeUpdatedItem.Description);
+            Assert.AreEqual(todoItem.IsCompleted, toBeUpdatedItem.IsCompleted);
         }
     }
 }
