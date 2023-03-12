@@ -37,7 +37,7 @@ namespace TodoList
 
             }));
 
-            services.AddDbContext<TodoListDBContext>(opt => opt.UseInMemoryDatabase(Configuration.GetConnectionString("TodoListdb")));
+            services.AddDbContext<TodoListDBContext>(opt => opt.UseInMemoryDatabase(Configuration.GetConnectionString("DatabaseName")));
             services.AddControllers();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
