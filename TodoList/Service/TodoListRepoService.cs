@@ -9,11 +9,11 @@ namespace TodoList.Service
 {
     public class TodoListRepoService : ITodoListRepo
     {
-        private readonly TodoListDBContext _toDoListContext;
+        private readonly TodoListDBContext _context;
 
-        public TodoListRepoService(TodoListDBContext toDoListDBContext)
+        public TodoListRepoService(TodoListDBContext context)
         {
-            _toDoListContext = toDoListDBContext;
+            _context = context;
         }
         public void CreateItem(TodoItem item)
         {
@@ -22,8 +22,8 @@ namespace TodoList.Service
                 throw new ArgumentNullException(nameof(item));
             }
 
-            _toDoListContext.TodoItems.Add(item);
-            _toDoListContext.SaveChanges();
+            _context.TodoItems.Add(item);
+            _context.SaveChanges();
         }
 
         public void DeleteItem(TodoItem item)
@@ -33,23 +33,23 @@ namespace TodoList.Service
                 throw new ArgumentNullException(nameof(item));
             }
 
-            _toDoListContext.TodoItems.Remove(item);
-            _toDoListContext.SaveChanges();
+            _context.TodoItems.Remove(item);
+            _context.SaveChanges();
         }
 
         public IEnumerable<TodoItem> GetAllItems()
         {
-            return _toDoListContext.TodoItems.ToList();
+            return _context.TodoItems.ToList();
         }
 
         public TodoItem GetItem(int id)
         {
-            return _toDoListContext.TodoItems.FirstOrDefault(item => item.Id == id);
+            return _context.TodoItems.FirstOrDefault(item => item.Id == id);
         }
 
         public bool SaveChanges()
         {
-            return (_toDoListContext.SaveChanges() >= 0);
+            return (_context.SaveChanges() >= 0);
         }
 
         public void UpdateItem(TodoItem item)
@@ -64,8 +64,8 @@ namespace TodoList.Service
             itemFromDatabase.Description = item.Description;
             itemFromDatabase.IsCompleted = item.IsCompleted;
 
-            _toDoListContext.Update(itemFromDatabase);
-            _toDoListContext.SaveChanges();
+            _context.Update(itemFromDatabase);
+            _context.SaveChanges();
         }
 
         public bool UpdateStatus(int id, bool status)
@@ -74,10 +74,10 @@ namespace TodoList.Service
             {
                 var itemFromDatabase = GetItem(id);
                 itemFromDatabase.IsCompleted = status;
-                _toDoListContext.Update(itemFromDatabase);
+                _context.Update(itemFromDatabase);
             }
 
-            if (_toDoListContext.SaveChanges() > 0)
+            if (_context.SaveChanges() > 0)
             {
                 return true;
             }
